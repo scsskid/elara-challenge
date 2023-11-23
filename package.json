@@ -1,0 +1,17 @@
+{
+  "private": true,
+  "scripts": {
+    "setup": "npm i && cd apps/api && npm i && cd ../../apps/web && npm i",
+    "dev:api": "cd apps/api && npm run dev",
+    "dev:web": "cd apps/web && npm run start",
+    "dev": "concurrently --kill-others \"npm run dev:api\" \"npm run dev:web\""
+  },
+  "devDependencies": {
+    "@types/react": "^17.0.15",
+    "@types/react-dom": "^17.0.9",
+    "concurrently": "^6.2.0"
+  },
+  "dependencies": {
+    "typescript": "^4.3.5"
+  }
+}

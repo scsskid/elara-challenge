@@ -1,0 +1,18 @@
+.app {
+  margin: 20px 30px;
+}
+
+.new-workorder-container {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.form-label {
+  display: inline-block;
+  min-width: 80px;
+}
+
+.new-workorder-btn {
+  width: 120px;
+}
