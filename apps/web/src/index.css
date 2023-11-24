@@ -1,3 +1,7 @@
+body {
+  font-family: 'system-ui', sans-serif;
+}
+
 .app {
   margin: 20px 30px;
 }
@@ -15,4 +19,30 @@
 
 .new-workorder-btn {
   width: 120px;
+}
+
+/* common  */
+
+table {
+  width: 100%;
+}
+
+/* workorder item */
+
+table {
+  width: 100%;
+}
+
+.table-cell,
+.table-head {
+  padding: 0.25rem 0.75rem;
+}
+
+.table-head {
+  font-weight: bold;
+  text-align: left;
+}
+
+.table-row:nth-child(even) {
+  background-color: #f2f2f2;
 }
