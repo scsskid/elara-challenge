@@ -8,6 +8,20 @@ import { fetchWorkOrders, submitWorkOrder, updateWorkOrderDone } from './api';
 
 const WorkOrders = () => {
   const [workOrders, setWorkOrders] = useState<IWorkOrder[]>([]);
+  const [searchProperty, setSearchProperty] = useState<'name' | 'id'>('id');
+  const [searchTerm, setSearchTerm] = useState<string>('');
+
+  // call api function when done checkbox is changed and update state
+  const doneChangeHandler = (id: string, done: boolean) => {
+    updateWorkOrderDone(id, done).then((updatedWorkOrders) =>
+      setWorkOrders(updatedWorkOrders)
+    );
+  };
+
+  // only return work orders that match the search term or return all if no search term
+  const workOrderFilter = (workOrder: IWorkOrder) => {
+    return workOrder[searchProperty].includes(searchTerm) || searchTerm === '';
+  };
 
   // initial fetch, only run at first render
   useEffect(() => {
@@ -23,6 +37,28 @@ const WorkOrders = () => {
         }
       />
 
+      <select
+        value={searchProperty}
+        onChange={(e) => {
+          setSearchProperty(e.target.value as 'name' | 'id');
+        }}
+      >
+        <option value="id">ID</option>
+        <option value="name">Name</option>
+      </select>
+
+      <input
+        type="search"
+        placeholder="Search"
+        value={searchTerm}
+        onChange={(e) => {
+          setSearchTerm(e.target.value);
+        }}
+      />
+
+      <p>{searchProperty}</p>
+      <p>{searchTerm}</p>
+
       <h2>Work Orders</h2>
       <table>
         <thead>
@@ -34,19 +70,16 @@ const WorkOrders = () => {
           </tr>
         </thead>
         <tbody>
-          {workOrders.map((workOrder) => (
-            <WorkOrder
-              key={workOrder.id}
-              workOrder={workOrder}
-              onDoneChange={(id, done) => {
-                updateWorkOrderDone(id, done).then((updatedWorkOrders) => {
-                  // todo: update state with res instesf of local state
-
-                  setWorkOrders(updatedWorkOrders);
-                });
-              }}
-            />
-          ))}
+          {workOrders
+            // filter work orders by search term and property (id or name)
+            .filter(workOrderFilter)
+            .map((workOrder) => (
+              <WorkOrder
+                key={workOrder.id}
+                workOrder={workOrder}
+                onDoneChange={doneChangeHandler}
+              />
+            ))}
         </tbody>
       </table>
     </div>
