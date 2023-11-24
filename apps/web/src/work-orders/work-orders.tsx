@@ -1,4 +1,6 @@
-import React, { useEffect, useState } from 'react';
+import React, { MutableRefObject, useEffect, useRef, useState } from 'react';
+import { A11yDialog } from 'react-a11y-dialog';
+import A11yDialogInstance from 'a11y-dialog';
 import { IWorkOrder } from './interfaces';
 import NewWorkOrder from './new-work-order';
 import WorkOrder from './work-order';
@@ -7,6 +9,10 @@ import WorkOrder from './work-order';
 import { fetchWorkOrders, submitWorkOrder, updateWorkOrderDone } from './api';
 
 const WorkOrders = () => {
+  // const dialog = useRef();
+  const dialog = useRef<A11yDialogInstance>(
+    null
+  ) as MutableRefObject<A11yDialogInstance>;
   const [workOrders, setWorkOrders] = useState<IWorkOrder[]>([]);
   const [searchProperty, setSearchProperty] = useState<'name' | 'id'>('id');
   const [searchTerm, setSearchTerm] = useState<string>('');
@@ -82,6 +88,49 @@ const WorkOrders = () => {
             ))}
         </tbody>
       </table>
+      <button
+        type="button"
+        onClick={() => {
+          if (!dialog.current) return;
+          dialog.current.show();
+        }}
+      >
+        Open the dialog
+      </button>
+
+      <A11yDialog
+        id="my-accessible-dialog"
+        dialogRef={(instance) => (dialog.current = instance!)}
+        title="The dialog title"
+        closeButtonPosition="none"
+        classNames={{
+          container: 'dialog-container',
+          overlay: 'dialog-overlay',
+          dialog: 'dialog-dialog',
+          title: 'sr-only'
+        }}
+      >
+        <div className="dialog-content">
+          <button
+            type="button"
+            aria-label="Close the dialog"
+            onClick={() => {
+              // if (!dialog.current) return;
+              dialog.current.hide();
+            }}
+          >
+            Close the dialog
+          </button>
+          <p>Some content for the dialog.</p>
+          <NewWorkOrder
+            onSubmit={submitWorkOrder}
+            onAddNewWorkOrder={(updatedWorkOrders) => {
+              setWorkOrders(updatedWorkOrders);
+              dialog.current.hide();
+            }}
+          />
+        </div>
+      </A11yDialog>
     </div>
   );
 };
