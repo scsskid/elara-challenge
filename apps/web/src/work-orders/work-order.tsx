@@ -9,7 +9,7 @@ type WorkOrderProps = {
 const WorkOrder = ({ workOrder, onDoneChange }: WorkOrderProps) => {
   const { id, date, name, done } = workOrder;
 
-  const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+  const handleDoneChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const id = event.target.closest('tr')?.dataset.id;
 
     // abort if no id
@@ -31,7 +31,7 @@ const WorkOrder = ({ workOrder, onDoneChange }: WorkOrderProps) => {
           name="done"
           type="checkbox"
           checked={done}
-          onChange={handleChange}
+          onChange={handleDoneChange}
         />
       </td>
       <td className="workorder-item-id | table-cell">{id}</td>

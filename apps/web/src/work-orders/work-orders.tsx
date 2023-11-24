@@ -34,31 +34,38 @@ const WorkOrders = () => {
 
   return (
     <div>
-      <NewWorkOrder
-        onSubmit={submitWorkOrder}
-        onAddNewWorkOrder={(updatedWorkOrders) =>
-          setWorkOrders(updatedWorkOrders)
-        }
-      />
+      <div>
+        <button
+          type="button"
+          onClick={() => {
+            if (!dialog.current) return;
+            dialog.current.show();
+          }}
+        >
+          New Work Order
+        </button>
+      </div>
 
-      <select
-        value={searchProperty}
-        onChange={(e) => {
-          setSearchProperty(e.target.value as 'name' | 'id');
-        }}
-      >
-        <option value="id">ID</option>
-        <option value="name">Name</option>
-      </select>
+      <div>
+        <select
+          value={searchProperty}
+          onChange={(e) => {
+            setSearchProperty(e.target.value as 'name' | 'id');
+          }}
+        >
+          <option value="id">ID</option>
+          <option value="name">Name</option>
+        </select>
 
-      <input
-        type="search"
-        placeholder="Search"
-        value={searchTerm}
-        onChange={(e) => {
-          setSearchTerm(e.target.value);
-        }}
-      />
+        <input
+          type="search"
+          placeholder="Search"
+          value={searchTerm}
+          onChange={(e) => {
+            setSearchTerm(e.target.value);
+          }}
+        />
+      </div>
 
       <p>{searchProperty}</p>
       <p>{searchTerm}</p>
@@ -86,15 +93,6 @@ const WorkOrders = () => {
             ))}
         </tbody>
       </table>
-      <button
-        type="button"
-        onClick={() => {
-          if (!dialog.current) return;
-          dialog.current.show();
-        }}
-      >
-        Open the dialog
-      </button>
 
       <A11yDialog
         id="my-accessible-dialog"
@@ -118,7 +116,7 @@ const WorkOrders = () => {
           >
             Close the dialog
           </button>
-          <p>Some content for the dialog.</p>
+
           <NewWorkOrder
             onSubmit={submitWorkOrder}
             onAddNewWorkOrder={(updatedWorkOrders) => {
