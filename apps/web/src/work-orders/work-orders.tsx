@@ -9,10 +9,8 @@ import WorkOrder from './work-order';
 import { fetchWorkOrders, submitWorkOrder, updateWorkOrderDone } from './api';
 
 const WorkOrders = () => {
-  // const dialog = useRef();
-  const dialog = useRef<A11yDialogInstance>(
-    null
-  ) as MutableRefObject<A11yDialogInstance>;
+  const dialog =
+    useRef<A11yDialogInstance>() as MutableRefObject<A11yDialogInstance>;
   const [workOrders, setWorkOrders] = useState<IWorkOrder[]>([]);
   const [searchProperty, setSearchProperty] = useState<'name' | 'id'>('id');
   const [searchTerm, setSearchTerm] = useState<string>('');
@@ -115,7 +113,6 @@ const WorkOrders = () => {
             type="button"
             aria-label="Close the dialog"
             onClick={() => {
-              // if (!dialog.current) return;
               dialog.current.hide();
             }}
           >
