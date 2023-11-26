@@ -50,7 +50,7 @@ const NewWorkOrder = ({
             <span className="form-label">Name</span>
             <input
               type="text"
-              placeholder="Was ist zu tun"
+              placeholder="Task Description..."
               name="name"
               required
             />
