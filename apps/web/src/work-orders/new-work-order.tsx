@@ -4,8 +4,13 @@ import { IWorkOrderCreate, IWorkOrder } from './interfaces';
 type NewWorkOrderProps = {
   onSubmit?: (workOrder: IWorkOrderCreate) => Promise<IWorkOrder[]>;
   onAddNewWorkOrder: (updatedWorkOrders: IWorkOrder[]) => void;
+  cancelButton?: JSX.Element;
 };
-const NewWorkOrder = ({ onSubmit, onAddNewWorkOrder }: NewWorkOrderProps) => {
+const NewWorkOrder = ({
+  onSubmit,
+  onAddNewWorkOrder,
+  cancelButton
+}: NewWorkOrderProps) => {
   const [currentDate] = useState(new Date());
 
   if (!onSubmit) {
@@ -65,6 +70,7 @@ const NewWorkOrder = ({ onSubmit, onAddNewWorkOrder }: NewWorkOrderProps) => {
           </label>
         </div>
         <div>
+          {cancelButton}
           <button type="submit">Neuen Auftrag anlegen</button>
         </div>
       </form>

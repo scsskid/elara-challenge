@@ -131,22 +131,24 @@ const WorkOrders = () => {
         }}
       >
         <div className="dialog-content">
-          <button
-            type="button"
-            aria-label="Close the dialog"
-            onClick={() => {
-              dialog.current.hide();
-            }}
-          >
-            Close the dialog
-          </button>
-
           <NewWorkOrder
             onSubmit={submitWorkOrder}
             onAddNewWorkOrder={(updatedWorkOrders) => {
               setWorkOrders(updatedWorkOrders);
               dialog.current.hide();
             }}
+            cancelButton={
+              <button
+                type="button"
+                aria-label="Cancel and Close the dialog"
+                onClick={() => {
+                  if (!dialog.current) return;
+                  dialog.current.hide();
+                }}
+              >
+                Cancel
+              </button>
+            }
           />
         </div>
       </A11yDialog>
