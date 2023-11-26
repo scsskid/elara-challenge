@@ -1,4 +1,11 @@
-import React, { MutableRefObject, useEffect, useRef, useState } from 'react';
+import React, {
+  MutableRefObject,
+  useEffect,
+  useRef,
+  useState,
+  useMemo
+} from 'react';
+import { debounce } from 'lodash';
 import { A11yDialog } from 'react-a11y-dialog';
 import A11yDialogInstance from 'a11y-dialog';
 import { IWorkOrder } from './interfaces';
@@ -12,8 +19,11 @@ const WorkOrders = () => {
   const dialog =
     useRef<A11yDialogInstance>() as MutableRefObject<A11yDialogInstance>;
   const [workOrders, setWorkOrders] = useState<IWorkOrder[]>([]);
-  const [searchProperty, setSearchProperty] = useState<'name' | 'id'>('id');
+  const [searchProperty, setSearchProperty] = useState<'name' | 'id'>('name');
   const [searchTerm, setSearchTerm] = useState<string>('');
+
+  // store work orders in intermediate `let` to apply filter on demand
+  let filteredWorkOrders = workOrders;
 
   // call api function when done checkbox is changed and update state
   const doneChangeHandler = (id: string, done: boolean) => {
@@ -22,15 +32,38 @@ const WorkOrders = () => {
     );
   };
 
-  // only return work orders that match the search term or return all if no search term
-  const workOrderFilter = (workOrder: IWorkOrder) => {
-    return workOrder[searchProperty].includes(searchTerm) || searchTerm === '';
+  // debounce search handler to not call api on every key stroke
+  const seachChangeHandler = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setSearchTerm(e.target.value);
   };
+  const debouncedSearchChangeHandler = useMemo(
+    () => debounce(seachChangeHandler, 300),
+    []
+  );
+
+  // only return work orders that match the search term (not case sensitive) or return all if no search term
+  const workOrderFilter = (workOrder: IWorkOrder) => {
+    return workOrder[searchProperty]
+      .toLowerCase()
+      .includes(searchTerm.toLowerCase());
+  };
+
+  // only filter work orders if search term is not empty
+  if (searchTerm !== '') {
+    filteredWorkOrders = workOrders.filter(workOrderFilter);
+  }
 
   // initial fetch, only run at first render
   useEffect(() => {
     fetchWorkOrders().then((workOrders) => setWorkOrders(workOrders));
   }, []);
+
+  // cleanup function for debounced search handler in case of unmount
+  useEffect(() => {
+    return () => {
+      debouncedSearchChangeHandler.cancel();
+    };
+  }, [debouncedSearchChangeHandler]);
 
   return (
     <div>
@@ -60,15 +93,9 @@ const WorkOrders = () => {
         <input
           type="search"
           placeholder="Search"
-          value={searchTerm}
-          onChange={(e) => {
-            setSearchTerm(e.target.value);
-          }}
+          onChange={debouncedSearchChangeHandler}
         />
       </div>
-
-      <p>{searchProperty}</p>
-      <p>{searchTerm}</p>
 
       <h2>Work Orders</h2>
       <table>
@@ -81,16 +108,13 @@ const WorkOrders = () => {
           </tr>
         </thead>
         <tbody>
-          {workOrders
-            // filter work orders by search term and property (id or name)
-            .filter(workOrderFilter)
-            .map((workOrder) => (
-              <WorkOrder
-                key={workOrder.id}
-                workOrder={workOrder}
-                onDoneChange={doneChangeHandler}
-              />
-            ))}
+          {filteredWorkOrders.map((workOrder) => (
+            <WorkOrder
+              key={workOrder.id}
+              workOrder={workOrder}
+              onDoneChange={doneChangeHandler}
+            />
+          ))}
         </tbody>
       </table>
 
