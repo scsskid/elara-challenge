@@ -31,11 +31,8 @@ const NewWorkOrder = ({
       date: formDataEntries.date
     } as IWorkOrderCreate;
 
-    // console.log(data);
-
     // submit data
     onSubmit(data).then((updatedWorkOrders) => {
-      console.log('done', updatedWorkOrders);
       form.reset();
 
       // set state to update UI
@@ -46,6 +43,7 @@ const NewWorkOrder = ({
   return (
     <div>
       <h2>New Work Order</h2>
+
       <form className="new-workorder-container" onSubmit={handleSubmit}>
         <div>
           <label htmlFor="name">
@@ -69,9 +67,10 @@ const NewWorkOrder = ({
             />
           </label>
         </div>
-        <div>
+
+        <div className="new-work-order__button-row">
           {cancelButton}
-          <button type="submit">Neuen Auftrag anlegen</button>
+          <button type="submit">Submit New Work Order</button>
         </div>
       </form>
     </div>

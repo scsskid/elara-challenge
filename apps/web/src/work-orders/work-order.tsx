@@ -25,7 +25,7 @@ const WorkOrder = ({ workOrder, onDoneChange }: WorkOrderProps) => {
     <tr className="workorder-item | table-row" data-id={id}>
       <td className="workorder-item-done | table-cell">
         <label htmlFor="done">
-          {/* <span className="sr-only">Done</span> */}
+          <span className="sr-only">Done</span>
         </label>
         <input
           name="done"
@@ -35,7 +35,13 @@ const WorkOrder = ({ workOrder, onDoneChange }: WorkOrderProps) => {
         />
       </td>
       <td className="workorder-item-id | table-cell">{id}</td>
-      <td className="workorder-item-date | table-cell">{date}</td>
+      <td className="workorder-item-date | table-cell">
+        {new Date(date).toLocaleDateString('en-US', {
+          year: 'numeric',
+          month: 'short',
+          day: 'numeric'
+        })}
+      </td>
       <td className="workorder-item-name | table-cell">{name}</td>
     </tr>
   );

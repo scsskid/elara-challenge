@@ -1,0 +1,26 @@
+.new-workorder-container {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  margin-top: 2rem;
+}
+
+.dialog-content--new-work-order {
+  padding: 2rem;
+
+  & h2 {
+    margin-top: 0;
+  }
+}
+
+.form-label {
+  display: inline-block;
+  min-width: 5rem;
+}
+
+.new-work-order__button-row {
+  display: flex;
+  gap: 1rem;
+  justify-content: flex-end;
+  margin-top: 1rem;
+}

@@ -67,34 +67,39 @@ const WorkOrders = () => {
 
   return (
     <div>
-      <div>
-        <button
-          type="button"
-          onClick={() => {
-            if (!dialog.current) return;
-            dialog.current.show();
-          }}
-        >
-          New Work Order
-        </button>
-      </div>
+      <div className="work-orders-header">
+        <div>
+          <button
+            type="button"
+            onClick={() => {
+              if (!dialog.current) return;
+              dialog.current.show();
+            }}
+          >
+            New Work Order
+          </button>
+        </div>
 
-      <div>
-        <select
-          value={searchProperty}
-          onChange={(e) => {
-            setSearchProperty(e.target.value as 'name' | 'id');
-          }}
-        >
-          <option value="id">ID</option>
-          <option value="name">Name</option>
-        </select>
+        <div className="work-orders__filter">
+          <div className="select-box-wrapper">
+            <select
+              className="select-box"
+              value={searchProperty}
+              onChange={(e) => {
+                setSearchProperty(e.target.value as 'name' | 'id');
+              }}
+            >
+              <option value="id">ID</option>
+              <option value="name">Name</option>
+            </select>
+          </div>
 
-        <input
-          type="search"
-          placeholder="Search"
-          onChange={debouncedSearchChangeHandler}
-        />
+          <input
+            type="search"
+            placeholder="Search"
+            onChange={debouncedSearchChangeHandler}
+          />
+        </div>
       </div>
 
       <h2>Work Orders</h2>
@@ -130,7 +135,7 @@ const WorkOrders = () => {
           title: 'sr-only'
         }}
       >
-        <div className="dialog-content">
+        <div className="dialog-content dialog-content--new-work-order">
           <NewWorkOrder
             onSubmit={submitWorkOrder}
             onAddNewWorkOrder={(updatedWorkOrders) => {

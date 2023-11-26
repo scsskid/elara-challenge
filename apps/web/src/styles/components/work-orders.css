@@ -1,0 +1,30 @@
+.work-orders-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.work-orders__filter {
+  display: flex;
+  gap: 1rem;
+  align-items: center;
+  order: -1;
+}
+
+table {
+  width: 100%;
+}
+
+.table-cell,
+.table-head {
+  padding: 0.25rem 0.75rem;
+}
+
+.table-head {
+  font-weight: bold;
+  text-align: left;
+}
+
+.table-row:nth-child(even) {
+  background-color: #f2f2f2;
+}
