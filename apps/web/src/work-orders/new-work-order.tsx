@@ -1,3 +1,4 @@
+import { useState } from 'react';
 import { IWorkOrderCreate, IWorkOrder } from './interfaces';
 
 type NewWorkOrderProps = {
@@ -5,6 +6,8 @@ type NewWorkOrderProps = {
   onAddNewWorkOrder: (updatedWorkOrders: IWorkOrder[]) => void;
 };
 const NewWorkOrder = ({ onSubmit, onAddNewWorkOrder }: NewWorkOrderProps) => {
+  const [currentDate] = useState(new Date());
+
   if (!onSubmit) {
     return null;
   }
@@ -53,7 +56,12 @@ const NewWorkOrder = ({ onSubmit, onAddNewWorkOrder }: NewWorkOrderProps) => {
         <div>
           <label htmlFor="name">
             <span className="form-label">Date</span>
-            <input type="date" name="date" required />
+            <input
+              type="date"
+              name="date"
+              required
+              defaultValue={currentDate.toISOString().split('T')[0]}
+            />
           </label>
         </div>
         <div>
